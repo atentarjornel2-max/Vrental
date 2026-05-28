@@ -5,3 +5,20 @@ services:
     plan: free
     buildCommand: npm ci
     startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_SSL
+        value: true
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_INVITE_CODE
+        value: admin123
+      - key: DEFAULT_ADMIN_EMAIL
+        value: admin@example.com
+      - key: DEFAULT_ADMIN_PASSWORD
+        value: admin123
+      - key: DEFAULT_CUSTOMER_EMAIL
+        value: customer@gmail.com
+      - key: DEFAULT_CUSTOMER_PASSWORD
+        value: customer123
