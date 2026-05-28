@@ -7,10 +7,14 @@ module.exports = (sequelize, DataTypes) => {
     isAdmin: { type: DataTypes.BOOLEAN, defaultValue: false }
   });
 
-  Customer.beforeCreate(async (user) => {
-    const hash = await bcrypt.hash(user.password, 10);
-    user.password = hash;
-  });
+  async function hashPassword(user) {
+    if (user.changed('password')) {
+      user.password = await bcrypt.hash(user.password, 10);
+    }
+  }
+
+  Customer.beforeCreate(hashPassword);
+  Customer.beforeUpdate(hashPassword);
 
   Customer.prototype.validatePassword = function (pwd) {
     return bcrypt.compare(pwd, this.password);

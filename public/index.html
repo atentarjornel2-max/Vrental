@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vrental Dashboard</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/">Vrental</a>
+      <nav aria-label="Primary">
+        <button class="nav-link active" data-view="browse" type="button">Browse</button>
+        <button class="nav-link" data-view="orders" type="button">My Bookings</button>
+        <button class="nav-link admin-only hidden" data-view="admin" type="button">Admin</button>
+      </nav>
+      <div class="account">
+        <span id="accountLabel">Guest</span>
+        <button class="small-button" id="logoutBtn" type="button">Logout</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Vehicle Rental System</p>
+          <h1>Book vehicles and track every request.</h1>
+          <p class="lede">Customers can reserve cars, while admins manage inventory, approvals, users, and booking status from one dashboard.</p>
+        </div>
+      </section>
+
+      <section class="auth-panel" id="authPanel">
+        <div class="auth-card">
+          <div>
+            <p class="eyebrow">Account</p>
+            <h2>Sign in or create an account</h2>
+          </div>
+          <div class="auth-grid">
+            <form id="loginForm">
+              <h3>Login</h3>
+              <input name="email" type="email" placeholder="Email" required>
+              <input name="password" type="password" placeholder="Password" required>
+              <button class="button primary" type="submit">Login</button>
+            </form>
+            <form id="registerForm">
+              <h3>Register</h3>
+              <input name="name" placeholder="Full name" required>
+              <input name="email" type="email" placeholder="Email" required>
+              <input name="password" type="password" placeholder="Password" required>
+              <input name="adminCode" placeholder="Admin code, optional">
+              <button class="button secondary-dark" type="submit">Create Account</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="view active-view" id="browseView">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Inventory</p>
+            <h2>Available Vehicles</h2>
+          </div>
+          <button class="button compact" id="refreshVehicles" type="button">Refresh</button>
+        </div>
+        <div class="vehicle-grid" id="vehicleGrid"></div>
+      </section>
+
+      <section class="view" id="ordersView">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Tracking</p>
+            <h2>My Booking Status</h2>
+          </div>
+          <button class="button compact" id="refreshOrders" type="button">Refresh</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Vehicle</th>
+                <th>Dates</th>
+                <th>Status</th>
+                <th>Message</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="view" id="adminView">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Admin</p>
+            <h2>Manage Rental Operations</h2>
+          </div>
+          <div class="tabs" role="tablist">
+            <button class="tab active" data-admin-tab="vehicles" type="button">Cars</button>
+            <button class="tab" data-admin-tab="bookings" type="button">Bookings</button>
+            <button class="tab" data-admin-tab="users" type="button">Users</button>
+          </div>
+        </div>
+
+        <div class="admin-tab active-admin-tab" id="adminVehicles">
+          <form class="admin-form" id="vehicleForm">
+            <input name="id" type="hidden">
+            <input name="make" placeholder="Make" required>
+            <input name="model" placeholder="Model" required>
+            <input name="year" type="number" placeholder="Year">
+            <input name="pricePerDay" type="number" step="0.01" placeholder="Price per day">
+            <input name="photoUrl" placeholder="Car photo URL">
+            <select name="status">
+              <option value="available">Available</option>
+              <option value="unavailable">Unavailable</option>
+            </select>
+            <button class="button primary" type="submit">Save Car</button>
+            <button class="button ghost" id="clearVehicleForm" type="button">Clear</button>
+          </form>
+          <div class="admin-list" id="adminVehicleList"></div>
+        </div>
+
+        <div class="admin-tab" id="adminBookings">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Vehicle</th>
+                  <th>Dates</th>
+                  <th>Status</th>
+                  <th>Message</th>
+                  <th>Update</th>
+                </tr>
+              </thead>
+              <tbody id="adminBookingsTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="admin-tab" id="adminUsers">
+          <div class="admin-list" id="adminUserList"></div>
+        </div>
+      </section>
+
+      <p class="toast" id="toast" role="status"></p>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
