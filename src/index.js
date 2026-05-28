@@ -16,6 +16,15 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
+app.get('/api/health', async (req, res) => {
+  try {
+    await sequelize.authenticate();
+    res.json({ ok: true, database: 'connected' });
+  } catch (error) {
+    res.status(500).json({ ok: false, database: 'disconnected', error: error.message });
+  }
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/bookings', bookingRoutes);
