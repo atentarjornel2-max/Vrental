@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const app = express();
 const { sequelize } = require('./models');
+const { seedDefaultUsers } = require('./utils/seed');
 const authRoutes = require('./routes/auth');
 const vehicleRoutes = require('./routes/vehicles');
 const bookingRoutes = require('./routes/bookings');
@@ -25,6 +26,8 @@ const server = app.listen(PORT, async () => {
   console.log(`Server listening on ${PORT}`);
   try {
     await sequelize.authenticate();
+    await sequelize.sync({ alter: true });
+    await seedDefaultUsers();
     console.log('Database connected successfully');
   } catch (e) {
     console.error('DB connection error', e.message);
